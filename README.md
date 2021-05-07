@@ -20,7 +20,8 @@ The following information may help to resolve the situation:
 The following packages have unmet dependencies:
  ros-noetic-desktop-full : Depends: ros-noetic-simulators but it is not going to be installed
                            Depends: ros-noetic-urdf-sim-tutorial but it is not going to be installed
-```bash
+```
+
 I really did not need Gazebo etc so I installed ros-noetic-desktop instead:
 
 ```bash
