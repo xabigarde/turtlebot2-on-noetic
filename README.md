@@ -83,8 +83,52 @@ catkin_make
 
 # source
 source ./devel/setup.bash
-echo "~/kobuki_ws/devel/setup.bash" >> ~/.bashrc
+echo "source ~/kobuki_ws/devel/setup.bash" >> ~/.bashrc
 ```
+If your have problems running catkin_make, verify that you have installed the dependencies for building ros packages mentioned before.
+
+You may also encounter missing package errors (like I did) when doing catkin_make which you'll need to resolve. In my case, I got an error due to a missing package "sophus":
+```
+CMake Error at ecl_core/ecl_linear_algebra/CMakeLists.txt:22 (find_package):
+  By not providing "FindSophus.cmake" in CMAKE_MODULE_PATH this project has
+  asked CMake to find a package configuration file provided by "Sophus", but
+  CMake did not find one.
+
+  Could not find a package configuration file provided by "Sophus" with any
+  of the following names:
+
+    SophusConfig.cmake
+    sophus-config.cmake
+
+  Add the installation prefix of "Sophus" to CMAKE_PREFIX_PATH or set
+  "Sophus_DIR" to a directory containing one of the above files.  If "Sophus"
+  provides a separate development package or SDK, be sure it has been
+  installed.
+
+
+-- Configuring incomplete, errors occurred!
+See also "/home/xabi/kobuki_ws/build/CMakeFiles/CMakeOutput.log".
+See also "/home/xabi/kobuki_ws/build/CMakeFiles/CMakeError.log".
+```
+
+ SOLUTION: Install ros-noetic-sophus and run catkin_make again:
+ 
+ ```
+ sudo apt install ros-noetic-sophus
+ ```
+
+After running catkin_make again, I got a similar error due to a missing package libusb, so I had to install that one too:
+
+```
+sudo apt install libusb-dev
+```
+
+And again, I got a similar error because of missing package libftdi, so I installed that one too:
+```
+sudo apt install libftdi-dev
+```
+
+After successfull catkin_make, remember to source ~/kobuki_ws/devel/setup.bash 
 
 ### Tips
 
@@ -119,7 +163,14 @@ catkin_make
 
 # source
 source ./devel/setup.bash
-echo "~/turtlebot2_ws/devel/setup.bash" >> ~/.bashrc
+echo "source ~/turtlebot2_ws/devel/setup.bash" >> ~/.bashrc
+```
+
+NOTE: catkin_make complained for missing package dependencies, which I had to manually install:
+```
+sudo apt install ros-noetic-vision-opencv 
+sudo apt install ros-noetic-image-pipeline 
+sudo apt install ros-noetic-joy
 ```
 
 ### Tips
@@ -132,16 +183,33 @@ echo "~/turtlebot2_ws/devel/setup.bash" >> ~/.bashrc
 ## Work with turtlebot2
 
 ### Bring Up
-
+Connect your PC to the kobuki base with a USB and run:
 ```bash
 roslaunch turtlebot_bringup minimal.launch
 ```
 
-### Control by KeyBoard
+If at this stage you may get the following warning (as I did), because the udev rules for the kobuki base have not been set up:
+```
+Kobuki : device does not (yet) available, is the usb connected?.
+Kobuki : no data stream, is kobuki turned on?
+```
+SOLUTION run the kobuki_ftdi script to create the udev rules and launch again:
+```
+rosrun kobuki_ftdi create_udev_rules 
+```
 
+### Control by KeyBoard
+In a new terminal, run this to control the turtlebot with the keyboard:
 ```bash
 roslaunch turtlebot_teleop keyboard_teleop.launch
 ```
+At this stage, you may get the following error (as I did) due to a mismatch with the python version:
+```
+/usr/bin/env: ‘python’: No such file or directory
+[turtlebot_teleop_keyboard-1] process has died [pid 3921, exit code 127, cmd /home/xabi/turtlebot2_ws/src/turtlebot/turtlebot_teleop/scripts/turtlebot_teleop_key turtlebot_teleop_keyboard/cmd_vel:=cmd_vel_mux/input/teleop __name:=turtlebot_teleop_keyboard __log:=/home/xabi/.ros/log/6ba457ce-af50-11eb-8ad4-ed2a7befc623/turtlebot_teleop_keyboard-1.log].
+log file: /home/xabi/.ros/log/6ba457ce-af50-11eb-8ad4-ed2a7befc623/turtlebot_teleop_keyboard-1*.log
+```
+SOLUTION: there's provably a better solution, but for now, just edit the ~/turtlebot2_ws/src/turtlebot/turtlebot_teleop/scripts/turtlebot_teleop_key script to point to python3.
 
 ### Work with rviz
 
