@@ -4,7 +4,9 @@ My installing procedure about turtlebot2 on neotic (ubuntu 20.04 focal).
 
 ## 1. Install ROS Noetic
 
-I tried to install ros-noetic-desktop-full in an Intel NUC i5 running a clean install of Ubuntu 20.04, but I got an ''unmet dependencies'':
+Below is a summary of the original instructions here: http://wiki.ros.org/noetic/Installation/Ubuntu
+
+I tried to install ros-noetic-desktop-full in an Intel NUC i5 running a clean install of Ubuntu 20.04, but I got an ''unmet dependencies'' error:
 
 ```bash
 ~$ sudo apt install ros-noetic-desktop-full
@@ -33,6 +35,18 @@ Once installed, remember to source your installation!!! And optionally, source i
 ```bash
 source /opt/ros/noetic/setup.bash
 echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+```
+
+Remember to also install the dependencies for building packages:
+
+```
+sudo apt install python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential
+```
+And initialize rosdep:
+
+```
+sudo rosdep init
+rosdep update
 ```
 
 ## 2. Download & build Kobuki packages from source
