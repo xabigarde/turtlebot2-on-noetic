@@ -66,8 +66,8 @@ git clone --branch noetic https://github.com/yujinrobot/kobuki_core.git
 
 # Download yujin_ocs:
 git clone https://github.com/yujinrobot/yujin_ocs.git
-# and then remove the unnecessary yocs packages (we only need yocs_cmd_vel_mux & yocs_controllers)
-mv yujin_ocs/yocs_cmd_vel_mux yujin_ocs/yocs_controllers .
+# and then remove the unnecessary yocs packages (we only need yocs_cmd_vel_mux, yocs_controllers & yocs_velocity_smoother)
+mv yujin_ocs/yocs_cmd_vel_mux yujin_ocs/yocs_controllers yujin_ocs/yocs_velocity_smoother .
 rm -rf yujin_ocs/
 
 # ecl_*
